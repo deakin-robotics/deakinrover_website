@@ -52,12 +52,7 @@ export function SiteHeader() {
           </NavigationMenu.Item>
           <NavigationMenu.Item>
             <NavigationMenu.Link asChild>
-              <Link href="/#mission">Mission</Link>
-            </NavigationMenu.Link>
-          </NavigationMenu.Item>
-          <NavigationMenu.Item>
-            <NavigationMenu.Link asChild>
-              <Link href="/#support">Support</Link>
+              <Link href="/support">Support</Link>
             </NavigationMenu.Link>
           </NavigationMenu.Item>
         </NavigationMenu.List>

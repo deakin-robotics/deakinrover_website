@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { BorealisPage } from "@/components/borealis-page";
 import type { RoverData } from "@/lib/rover-data";
 
 type RoverPageProps = {
@@ -7,6 +8,14 @@ type RoverPageProps = {
 };
 
 export function RoverPage({ rover }: RoverPageProps) {
+  if (rover.slug === "borealis") {
+    return <BorealisPage />;
+  }
+
+  return <GenericRoverPage rover={rover} />;
+}
+
+function GenericRoverPage({ rover }: RoverPageProps) {
   return (
     <main className={`rover-page rover-page--${rover.accent}`}>
       <section className="rover-hero page-section">
@@ -57,7 +66,7 @@ export function RoverPage({ rover }: RoverPageProps) {
       <section className="page-section rover-cta" id="support">
         <p className="eyebrow">Keep exploring</p>
         <h2>Team and partnership information</h2>
-        <Link className="button button--light" href="/#support">View support information <span aria-hidden="true">↗</span></Link>
+        <Link className="button button--light" href="/support">View partner benefits <span aria-hidden="true">↗</span></Link>
       </section>
     </main>
   );

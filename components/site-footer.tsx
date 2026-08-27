@@ -8,9 +8,9 @@ export function SiteFooter() {
         <p className="footer-note">Project archive / development build.</p>
       </div>
       <div className="footer-links">
-        <Link href="/#mission">Mission</Link>
+        <Link href="/#programme">Timeline</Link>
         <Link href="/#rovers">Rovers</Link>
-        <Link href="/#support">Support</Link>
+        <Link href="/support">Support</Link>
       </div>
       <p className="footer-copyright">© {new Date().getFullYear()} Deakin Rover Team</p>
     </footer>
