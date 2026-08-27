@@ -38,12 +38,16 @@ export function SiteHeader() {
               <ul>
                 <li>
                   <NavigationMenu.Link asChild>
-                    <Link href="/rovers/borealis">Borealis</Link>
+                    {/* Intentional full reload: reset the 3D scene on rover entry. */}
+                    {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+                    <a href="/rovers/borealis">Borealis</a>
                   </NavigationMenu.Link>
                 </li>
                 <li>
                   <NavigationMenu.Link asChild>
-                    <Link href="/rovers/aurora">AURORA</Link>
+                    {/* Intentional full reload: reset the 3D scene on rover entry. */}
+                    {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+                    <a href="/rovers/aurora">AURORA</a>
                   </NavigationMenu.Link>
                 </li>
                 <li><span className="nav-dropdown-pending" aria-disabled="true">Chasmata</span></li>
