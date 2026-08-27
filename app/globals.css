@@ -156,8 +156,9 @@ h3 { font-size: clamp(2rem, 4vw, 4rem); line-height: 0.95; margin-bottom: 0; }
 .detail-placeholder p:last-child { color: #999994; font-size: .85rem; line-height: 1.6; max-width: 250px; }
 .rover-cta { border-top: 1px solid var(--line); padding-bottom: 11rem; padding-top: 11rem; }
 .rover-cta h2 { margin-bottom: 3rem; max-width: 650px; }
-.borealis-explorer { align-items: center; display: grid; gap: 7vw; grid-template-columns: 1fr 1fr; min-height: 100vh; padding-bottom: 7rem; padding-top: 8rem; }
-.borealis-explorer-copy { align-self: start; }
+.borealis-explorer { min-height: 100vh; overflow: hidden; position: relative; }
+.borealis-explorer-copy { background: rgba(9, 9, 9, .84); border: 1px solid var(--line); left: 7vw; padding: 2rem 2.2rem 2.2rem; position: absolute; top: 50%; transform: translateY(-50%); width: min(42vw, 620px); z-index: 2; }
+.borealis-explorer-copy-content { transform: translateY(-5rem); }
 .borealis-explorer-copy .back-link { margin-bottom: 6rem; margin-top: 2rem; position: relative; top: 5rem; }
 .borealis-explorer-copy h1 { color: var(--rover-accent); margin-bottom: 1.5rem; }
 .borealis-system-controls { margin-top: 4rem; max-width: 560px; }
@@ -165,10 +166,14 @@ h3 { font-size: clamp(2rem, 4vw, 4rem); line-height: 0.95; margin-bottom: 0; }
 .borealis-system-button { align-items: center; background: transparent; border: 0; border-bottom: 2px solid transparent; color: var(--muted); cursor: pointer; display: flex; flex: 0 0 auto; font-family: 'DM Mono', monospace; font-size: .68rem; letter-spacing: .06em; padding: 1rem 0 .9rem; text-align: left; text-transform: uppercase; transition: border-color 180ms ease, color 180ms ease; }
 .borealis-system-button:hover, .borealis-system-button:focus-visible, .borealis-system-button[aria-selected='true'] { color: var(--rover-accent); }
 .borealis-system-button[aria-selected='true'] { border-bottom-color: var(--rover-accent); }
-.borealis-system-detail { margin-top: 2rem; min-height: 250px; padding-top: 1.2rem; }
-.borealis-system-detail ul { color: #9b9b96; font-size: .95rem; line-height: 1.7; margin: 1.5rem 0 0; max-width: 500px; padding-left: 1.1rem; }
-.borealis-model-placeholder { min-height: 560px; transform-origin: center; }
-.borealis-model-focus { bottom: 1.2rem; color: var(--rover-accent); font-family: 'DM Mono', monospace; font-size: .62rem; letter-spacing: .06em; position: absolute; right: 1.2rem; text-transform: uppercase; }
+.borealis-system-detail { margin-top: 2rem; min-height: 250px; }
+.borealis-system-detail ul { color: #9b9b96; font-size: .95rem; line-height: 1.7; margin: 0; max-width: 500px; padding-left: 1.1rem; }
+.borealis-model-placeholder { background: #090909; inset: 0; min-height: 100vh; overflow: hidden; position: absolute; }
+.borealis-model-placeholder canvas { display: block; height: 100% !important; width: 100% !important; }
+.borealis-model-overlay { inset: 0; pointer-events: none; position: absolute; }
+.borealis-model-overlay .model-label, .borealis-model-overlay .model-status, .borealis-model-overlay .borealis-model-focus { z-index: 1; }
+.borealis-scroll-control { align-items: center; background: rgba(9, 9, 9, .78); border: 1px solid var(--line); bottom: 2rem; color: var(--paper); cursor: pointer; display: flex; font-size: 1.5rem; height: 48px; justify-content: center; left: 50%; line-height: 1; position: absolute; transform: translateX(-50%); transition: background 180ms ease, border-color 180ms ease; width: 48px; z-index: 3; }
+.borealis-scroll-control:hover, .borealis-scroll-control:focus-visible { background: rgba(9, 9, 9, .96); border-color: var(--paper); }
 .borealis-record { align-items: end; background: #111; color: var(--paper); display: grid; gap: 7vw; grid-template-columns: .9fr 1.1fr; max-width: none; padding-bottom: 10rem; padding-top: 10rem; }
 .borealis-record h2 { max-width: 600px; }
 .borealis-record-grid { border-top: 1px solid var(--line); display: grid; gap: 1.5rem; grid-template-columns: repeat(3, 1fr); }
@@ -178,10 +183,17 @@ h3 { font-size: clamp(2rem, 4vw, 4rem); line-height: 0.95; margin-bottom: 0; }
 .borealis-media { padding-bottom: 10rem; padding-top: 10rem; }
 .borealis-media-heading { align-items: end; display: flex; justify-content: space-between; }
 .borealis-media-heading h2 { margin-bottom: 0; }
-.borealis-media-grid { display: grid; gap: 1rem; grid-template-columns: 1.35fr .65fr; margin-top: 4rem; }
+.borealis-media-grid { align-items: start; display: grid; gap: 5rem 1rem; grid-template-columns: repeat(12, minmax(0, 1fr)); margin-top: 4rem; }
 .borealis-media-grid figure { margin: 0; }
 .borealis-media-image { aspect-ratio: 1.25 / 1; overflow: hidden; position: relative; }
-.borealis-media-grid figure:first-child .borealis-media-image { aspect-ratio: 1.35 / 1; }
+.borealis-media-item--primary { grid-column: 1 / 8; }
+.borealis-media-item--field { grid-column: 8 / 13; margin-top: 5rem !important; }
+.borealis-media-item--team { grid-column: 1 / 6; margin-top: -1rem !important; }
+.borealis-media-item--detail { grid-column: 7 / 13; margin-top: -1rem !important; }
+.borealis-media-item--primary .borealis-media-image { aspect-ratio: 1.35 / 1; }
+.borealis-media-item--field .borealis-media-image { aspect-ratio: 1.6 / 1; }
+.borealis-media-item--team .borealis-media-image { aspect-ratio: 1.1 / 1; }
+.borealis-media-item--detail .borealis-media-image { aspect-ratio: 1.25 / 1; }
 .borealis-media-image img { object-fit: cover; }
 .borealis-media-grid figcaption { color: var(--muted); font-family: 'DM Mono', monospace; font-size: .62rem; letter-spacing: .05em; padding-top: .8rem; text-transform: uppercase; }
 
@@ -303,15 +315,19 @@ h3 { font-size: clamp(2rem, 4vw, 4rem); line-height: 0.95; margin-bottom: 0; }
   .explorer-header { align-items: start; display: block; margin-bottom: 2.5rem; }
   .explorer-header .section-description { margin-top: 1.5rem; }
   .detail-grid-section { display: block; padding-bottom: 7rem; padding-top: 0; }
-  .borealis-explorer { align-items: stretch; padding-top: 9rem; }
+  .borealis-explorer { min-height: 100svh; }
+  .borealis-explorer-copy { bottom: 1rem; left: 1rem; max-width: none; padding: 1.25rem; right: 1rem; top: auto; transform: none; width: auto; }
+  .borealis-explorer-copy-content { transform: none; }
   .borealis-system-controls { margin-top: 3rem; max-width: none; }
-  .borealis-model-placeholder { min-height: 360px; order: -1; width: 100%; }
+  .borealis-model-placeholder { min-height: 100svh; }
+  .borealis-scroll-control { bottom: 1.5rem; }
   .borealis-record { display: block; padding-bottom: 7rem; padding-top: 7rem; }
   .borealis-record-grid { grid-template-columns: 1fr; margin-top: 3rem; }
   .borealis-media { padding-bottom: 7rem; padding-top: 7rem; }
   .borealis-media-heading { align-items: start; display: block; }
   .borealis-media-heading h2 { margin-top: 1.5rem; }
   .borealis-media-grid { grid-template-columns: 1fr; margin-top: 2.5rem; }
+  .borealis-media-grid figure { grid-column: 1 / -1; margin-top: 0 !important; }
   .detail-placeholder { padding: 1.3rem 0 2rem; }
   .rover-cta { padding-bottom: 7rem; padding-top: 7rem; }
   .home-hero { align-items: stretch; display: flex; flex-direction: column; padding-bottom: 7rem; padding-top: 9rem; }
