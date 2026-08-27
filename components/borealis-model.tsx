@@ -17,7 +17,7 @@ function RoverModel({ activeSystem }: RoverModelProps) {
   const scale = 1 + activeSystem * 0.015;
 
   return (
-    <Bounds fit clip margin={1.25}>
+    <Bounds fit clip margin={1.25} maxDuration={2} observe={false}>
       <Center>
         <group rotation={[0.08, -0.65, 0]} scale={scale}>
           <primitive object={scene} />
