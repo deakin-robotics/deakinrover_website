@@ -2,51 +2,40 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import {
+  motion,
+  useMotionValueEvent,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+  type MotionValue,
+} from "motion/react";
+import { useRef, useState, type ReactNode } from "react";
 
 const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
 
 export function RoverShowcase() {
   const showcaseRef = useRef<HTMLElement>(null);
-  const [transition, setTransition] = useState(0);
-
-  useEffect(() => {
-    const showcase = showcaseRef.current;
-
-    if (!showcase) {
-      return;
+  const shouldReduceMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: showcaseRef,
+    offset: ["start start", "end end"],
+  });
+  const transition = useTransform(scrollYProgress, (progress) => {
+    if (shouldReduceMotion) {
+      return progress >= 0.5 ? 1 : 0;
     }
 
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const startTop = showcase.getBoundingClientRect().top;
+    return clamp((progress - 0.30) / 0.32, 0, 1);
+  });
+  const borealisOpacity = useTransform(transition, (value) => 1 - value);
+  const [activeRover, setActiveRover] = useState<"borealis" | "aurora">("borealis");
 
-    const updateTransition = () => {
-      const scrollDistance = showcase.offsetHeight - window.innerHeight;
-      const scrolledDistance = startTop - showcase.getBoundingClientRect().top;
-      const progress = scrollDistance > 0
-        ? clamp(scrolledDistance / scrollDistance, 0, 1)
-        : 0;
-      const nextTransition = reduceMotion
-        ? progress >= 0.5 ? 1 : 0
-        : clamp((progress - 0.34) / 0.32, 0, 1);
+  useMotionValueEvent(transition, "change", (value) => {
+    const nextRover = value < 0.5 ? "borealis" : "aurora";
 
-      setTransition(nextTransition);
-    };
-
-    updateTransition();
-    window.addEventListener("scroll", updateTransition, { passive: true });
-    document.addEventListener("scroll", updateTransition, { capture: true, passive: true });
-    window.addEventListener("resize", updateTransition);
-
-    return () => {
-      window.removeEventListener("scroll", updateTransition);
-      document.removeEventListener("scroll", updateTransition, { capture: true });
-      window.removeEventListener("resize", updateTransition);
-    };
-  }, []);
-
-  const borealisOpacity = 1 - transition;
-  const auroraOpacity = transition;
+    setActiveRover((currentRover) => currentRover === nextRover ? currentRover : nextRover);
+  });
 
   return (
     <section className="rover-showcase" ref={showcaseRef} aria-label="Rover showcase">
@@ -56,7 +45,7 @@ export function RoverShowcase() {
           image="/assets/borealis/hero-16x9.png"
           imageAlt="Borealis rover operating on sandy terrain"
           opacity={borealisOpacity}
-          active={transition < 0.5}
+          active={activeRover === "borealis"}
           accent="blue"
           meta={
             <>
@@ -69,10 +58,10 @@ export function RoverShowcase() {
         />
         <RoverPanel
           name="AURORA"
-          image="/assets/aurora/hero-16x9.png"
+          image="/assets/aurora/hero-16x9-balanced.png"
           imageAlt="AURORA rover"
-          opacity={auroraOpacity}
-          active={transition >= 0.5}
+          opacity={transition}
+          active={activeRover === "aurora"}
           accent="orange"
           meta={
             <>
@@ -93,7 +82,7 @@ type RoverPanelProps = {
   name: string;
   image: string;
   imageAlt: string;
-  opacity: number;
+  opacity: MotionValue<number>;
   active: boolean;
   accent: "blue" | "orange";
   meta: ReactNode;
@@ -102,7 +91,7 @@ type RoverPanelProps = {
 
 function RoverPanel({ name, image, imageAlt, opacity, active, accent, meta, href }: RoverPanelProps) {
   return (
-    <div
+    <motion.div
       className={`rover-showcase-panel rover-showcase-panel--${accent}`}
       style={{ opacity, pointerEvents: active ? "auto" : "none" }}
       aria-hidden={!active}
@@ -115,6 +104,6 @@ function RoverPanel({ name, image, imageAlt, opacity, active, accent, meta, href
           Explore {name} <span aria-hidden="true">↗</span>
         </Link>
       </div>
-    </div>
+    </motion.div>
   );
 }
