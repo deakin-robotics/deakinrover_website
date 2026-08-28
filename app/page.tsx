@@ -1,6 +1,7 @@
 import { RoverShowcase } from "@/components/rover-showcase";
 import { HomepageContentSequence } from "@/components/homepage-content-sequence";
 import { PartnerNote } from "@/components/partner-note";
+import { BackToTop } from "@/components/back-to-top";
 
 export default function HomePage() {
   return (
@@ -10,6 +11,8 @@ export default function HomePage() {
       <HomepageContentSequence />
 
       <PartnerNote />
+
+      <BackToTop />
     </main>
   );
 }

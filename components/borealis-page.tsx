@@ -7,11 +7,61 @@ import { useState } from "react";
 
 import { BorealisModel } from "@/components/borealis-model";
 
-const systems = ["Chassis", "Electronics", "Manipulation"];
+const systems = [
+  {
+    name: "Chassis",
+    details: [
+      "1.0 × 0.9 × 0.5 m footprint",
+      "Approximately 40 kg including payloads",
+      "Rocker-bogie suspension · non-pneumatic wheels",
+    ],
+  },
+  {
+    name: "Power",
+    details: [
+      "24 V power bus · 5 V logic bus",
+      "6S 20 Ah battery · BMS",
+      "E-stop · power data logger",
+    ],
+  },
+  {
+    name: "Perception",
+    details: [
+      "Three 5 MP UVC cameras",
+      "640×480 at 30 fps",
+      "Approximately 140° field of view",
+    ],
+  },
+  {
+    name: "Communications",
+    details: [
+      "5 GHz wireless bridge",
+      "Video, telemetry, and control data",
+      "Ubiquiti airMAX radio system",
+    ],
+  },
+  {
+    name: "Manipulation",
+    details: [
+      "6-DOF serial robotic arm",
+      "Carbon-fibre links · CAN bus control",
+      "Interchangeable gripper and scooper end-effectors",
+    ],
+  },
+  {
+    name: "Autonomy",
+    details: [
+      "ROS 2 Jazzy · Nav2 stack",
+      "Jetson Orin Nano Super · RealSense D435i",
+      "Integration in progress at SAR submission",
+    ],
+  },
+];
 
 export function BorealisPage() {
   const [activeSystem, setActiveSystem] = useState(0);
   const shouldReduceMotion = useReducedMotion();
+  const activeSubsystem = systems[activeSystem];
 
   return (
     <main className="rover-page rover-page--blue borealis-page">
@@ -26,14 +76,14 @@ export function BorealisPage() {
                 {systems.map((system, index) => (
                   <button
                     className="borealis-system-button"
-                    key={system}
+                    key={system.name}
                     type="button"
                     role="tab"
                     aria-selected={activeSystem === index}
                     aria-controls={`borealis-system-detail-${index}`}
                     onClick={() => setActiveSystem(index)}
                   >
-                    {system}
+                    {system.name}
                   </button>
                 ))}
               </div>
@@ -48,7 +98,7 @@ export function BorealisPage() {
                 transition={{ duration: 0.25 }}
               >
                 <ul>
-                  <li>Verified subsystem information will be added here.</li>
+                  {activeSubsystem.details.map((detail) => <li key={detail}>{detail}</li>)}
                 </ul>
               </motion.div>
             </div>

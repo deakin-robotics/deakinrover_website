@@ -3,9 +3,9 @@ import Link from "next/link";
 type ProgrammeEntry = {
   year: string;
   name: string;
-  description: string;
-  result?: string;
+  details: string[];
   href?: string;
+  fullReload?: boolean;
   accent: "orange" | "blue" | "yellow" | "muted";
 };
 
@@ -13,23 +13,36 @@ const programmeEntries: ProgrammeEntry[] = [
   {
     year: "2025",
     name: "AURORA",
-    description: "First competition entry",
-    result: "13th place · 119.2 points",
+    details: [
+      "6-wheel rocker-bogie",
+      "V-slot aluminium chassis",
+      "ROS 2 Humble · Raspberry Pi 5",
+      "Foundation rover",
+    ],
     href: "/rovers/aurora",
     accent: "orange",
   },
   {
     year: "2026",
     name: "BOREALIS",
-    description: "Second competition",
-    result: "13th place · 135.8 points · Best Team Culture Award",
+    details: [
+      "ROS 2 Jazzy · Nav2",
+      "6-DOF robotic arm · CAN bus",
+      "5 GHz wireless bridge · 1.0 × 0.9 m footprint",
+    ],
     href: "/rovers/borealis",
+    fullReload: true,
     accent: "blue",
   },
   {
     year: "CURRENT",
     name: "CHASMATA",
-    description: "Current rover in development",
+    details: [
+      "4-wheel rocker suspension · modular payloads",
+      "6-DOF robotic arm · science payload",
+      "ROS 2 Jazzy · 3D mapping · Nav2",
+      "Currently in development",
+    ],
     accent: "yellow",
   },
 ];
@@ -55,14 +68,21 @@ export function RoverProgramme() {
             <span className="programme-marker" aria-hidden="true" />
             <div className="programme-entry-content">
               {entry.href ? (
-                <Link className="programme-entry-link" href={entry.href}>
-                  <h3>{entry.name} <span aria-hidden="true">↗</span></h3>
-                </Link>
+                entry.fullReload ? (
+                  <a className="programme-entry-link" href={entry.href}>
+                    <h3>{entry.name} <span aria-hidden="true">↗</span></h3>
+                  </a>
+                ) : (
+                  <Link className="programme-entry-link" href={entry.href}>
+                    <h3>{entry.name} <span aria-hidden="true">↗</span></h3>
+                  </Link>
+                )
               ) : (
                 <h3>{entry.name}</h3>
               )}
-              <p className="programme-description">{entry.description}</p>
-              {entry.result && <p className="programme-result">{entry.result}</p>}
+              <div className="programme-details">
+                {entry.details.map((detail) => <p key={detail}>{detail}</p>)}
+              </div>
             </div>
           </article>
         ))}

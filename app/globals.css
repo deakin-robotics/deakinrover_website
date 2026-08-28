@@ -29,6 +29,11 @@ button { font: inherit; }
 .text-link, .back-link, .footer-links a { font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 0.07em; text-transform: uppercase; }
 .site-nav a, .nav-dropdown-trigger { color: var(--muted); transition: color 180ms ease; }
 .site-nav a:hover, .nav-dropdown-trigger:hover, .footer-links a:hover, .back-link:hover { color: var(--paper); }
+.site-socials { align-items: center; display: flex; gap: 1rem; margin-left: auto; }
+.site-socials a { color: var(--muted); display: flex; transition: color 180ms ease; }
+.site-socials a:hover, .site-socials a:focus-visible { color: var(--paper); }
+.site-socials svg { fill: none; height: 18px; stroke: currentColor; stroke-width: 1.6; width: 18px; }
+.site-socials svg path:last-child, .site-socials-fill { fill: currentColor; stroke: none; }
 .site-nav-list > li { position: relative; }
 .site-nav-list > li > a, .nav-dropdown-trigger { align-items: center; display: flex; line-height: 1; min-height: 22px; }
 .nav-dropdown-trigger { background: transparent; border: 0; cursor: pointer; display: flex; padding: 0; }
@@ -111,6 +116,9 @@ h3 { font-size: clamp(2rem, 4vw, 4rem); line-height: 0.95; margin-bottom: 0; }
 .footer-note, .footer-copyright { color: var(--muted); font-family: 'DM Mono', monospace; font-size: .62rem; line-height: 1.6; margin: 0; }
 .footer-links { display: flex; gap: 1.4rem; justify-content: center; }
 .footer-copyright { text-align: right; }
+.back-to-top { align-items: center; background: var(--paper); border: 1px solid var(--paper); bottom: 2rem; color: var(--black); cursor: pointer; display: flex; font-size: 1.35rem; height: 48px; justify-content: center; opacity: 0; pointer-events: none; position: fixed; right: 2rem; transform: translateY(8px); transition: opacity 180ms ease, transform 180ms ease, visibility 180ms ease; visibility: hidden; width: 48px; z-index: 8; }
+.back-to-top--visible { opacity: 1; pointer-events: auto; transform: translateY(0); visibility: visible; }
+.back-to-top:hover, .back-to-top:focus-visible { background: #d8d8d3; border-color: #d8d8d3; }
 .support-page { background: var(--black); color: var(--paper); }
 .support-hero { align-items: end; display: grid; gap: 7vw; grid-template-columns: 1.1fr .9fr; min-height: 75vh; padding-bottom: 8rem; padding-top: 10rem; }
 .support-hero h1 { color: var(--paper); margin-bottom: 0; }
@@ -161,15 +169,17 @@ h3 { font-size: clamp(2rem, 4vw, 4rem); line-height: 0.95; margin-bottom: 0; }
 .borealis-explorer-copy-content { transform: translateY(-5rem); }
 .borealis-explorer-copy .back-link { margin-bottom: 6rem; margin-top: 2rem; position: relative; top: 5rem; }
 .borealis-explorer-copy h1 { color: var(--rover-accent); margin-bottom: 1.5rem; }
-.borealis-system-controls { margin-top: 4rem; max-width: 560px; }
+.borealis-system-controls { margin-top: 4rem; max-width: 680px; }
 .borealis-system-list { border-bottom: 1px solid var(--line); border-top: 1px solid var(--line); display: flex; gap: 1.5rem; overflow-x: auto; }
 .borealis-system-button { align-items: center; background: transparent; border: 0; border-bottom: 2px solid transparent; color: var(--muted); cursor: pointer; display: flex; flex: 0 0 auto; font-family: 'DM Mono', monospace; font-size: .68rem; letter-spacing: .06em; padding: 1rem 0 .9rem; text-align: left; text-transform: uppercase; transition: border-color 180ms ease, color 180ms ease; }
 .borealis-system-button:hover, .borealis-system-button:focus-visible, .borealis-system-button[aria-selected='true'] { color: var(--rover-accent); }
 .borealis-system-button[aria-selected='true'] { border-bottom-color: var(--rover-accent); }
-.borealis-system-detail { margin-top: 2rem; min-height: 250px; }
-.borealis-system-detail ul { color: #9b9b96; font-size: .95rem; line-height: 1.7; margin: 0; max-width: 500px; padding-left: 1.1rem; }
+.borealis-system-detail { margin-top: 3rem; min-height: 250px; }
+.borealis-system-detail ul { color: #9b9b96; font-size: 1.1rem; line-height: 1.6; margin: 0; max-width: 680px; padding-left: 1.1rem; }
+.borealis-system-detail li { padding: .8rem 0; }
 .borealis-model-placeholder { background: #090909; inset: 0; min-height: 100vh; overflow: hidden; position: absolute; }
-.borealis-model-placeholder canvas { display: block; height: 100% !important; width: 100% !important; }
+.borealis-model-placeholder canvas { display: block; height: 100% !important; opacity: 0; width: 100% !important; }
+.borealis-model-placeholder--ready canvas { opacity: 1; transition: opacity 2.5s ease; }
 .borealis-model-overlay { inset: 0; pointer-events: none; position: absolute; }
 .borealis-model-overlay .model-label, .borealis-model-overlay .model-status, .borealis-model-overlay .borealis-model-focus { z-index: 1; }
 .borealis-scroll-control { align-items: center; background: rgba(9, 9, 9, .78); border: 1px solid var(--line); bottom: 2rem; color: var(--paper); cursor: pointer; display: flex; font-size: 1.5rem; height: 48px; justify-content: center; left: 50%; line-height: 1; position: absolute; transform: translateX(-50%); transition: background 180ms ease, border-color 180ms ease; width: 48px; z-index: 3; }
@@ -259,7 +269,8 @@ h3 { font-size: clamp(2rem, 4vw, 4rem); line-height: 0.95; margin-bottom: 0; }
 .programme-entry-link { display: inline-block; }
 .programme-entry-link h3 span { font-size: 1.2rem; margin-left: .4rem; vertical-align: .25em; }
 .programme-description { color: #b9b9b5; font-size: 1rem; line-height: 1.5; margin-bottom: 1rem; }
-.programme-result { color: var(--muted); line-height: 1.7; margin-bottom: 0; max-width: 250px; }
+.programme-details { color: var(--muted); font-family: 'DM Mono', monospace; font-size: .68rem; letter-spacing: .07em; line-height: 1.7; max-width: 420px; text-transform: uppercase; }
+.programme-details p { margin: 0; }
 .team-section { background: #111; color: var(--paper); display: flex; flex-direction: column; height: 100vh; max-width: none; padding-bottom: 0; padding-top: 3rem; }
 .team-copy { text-align: center; }
 .team-copy h2 { font-size: clamp(1.8rem, 3vw, 3.2rem); margin: 0 auto 1.5rem; max-width: none; white-space: nowrap; }
@@ -284,6 +295,7 @@ h3 { font-size: clamp(2rem, 4vw, 4rem); line-height: 0.95; margin-bottom: 0; }
 @media (max-width: 850px) {
   .site-header { height: 72px; padding: 0 6vw; }
   .site-nav { display: none; }
+  .site-socials { gap: .75rem; }
   .page-section { padding-left: 6vw; padding-right: 6vw; }
   .hero, .rover-hero, .borealis-explorer { display: flex; flex-direction: column; justify-content: center; min-height: auto; padding-bottom: 7rem; padding-top: 10rem; }
   .hero-copy, .rover-hero-copy { align-self: flex-start; }
@@ -364,16 +376,20 @@ h3 { font-size: clamp(2rem, 4vw, 4rem); line-height: 0.95; margin-bottom: 0; }
   .rover-showcase-copy { bottom: 7rem; margin-left: 6vw; }
   .rover-showcase-copy h1 { font-size: clamp(4.5rem, 21vw, 8rem); }
   .rover-showcase .hero-scroll { display: none; }
+  .back-to-top { bottom: 1.5rem; right: 1.5rem; }
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .hero-visual, .model-placeholder, .rover-showcase-copy { animation: reveal 1.5s ease-out both; }
-  .rover-showcase-panel--blue .rover-showcase-image { --rover-image-scale: 1; animation: reveal-image 1.5s ease-out both; }
-  .borealis-model-placeholder canvas { animation: model-canvas-reveal 2.5s ease-out both; }
+  .hero-visual, .model-placeholder { animation: reveal 1.5s ease-out both; }
+  .rover-showcase-copy { animation: reveal 1s ease-out both; }
+  .rover-showcase-panel--blue .rover-showcase-image { --rover-image-scale: 1; animation: reveal-image 1s ease-out both; }
   .rover-card:hover .rover-card-visual { transform: translateY(-5px); }
   .rover-card-visual { transition: transform 300ms ease; }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .back-to-top { transition: none; }
+}
+
 @keyframes reveal { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes reveal-image { from { opacity: 0; transform: translateY(16px) scale(var(--rover-image-scale)); } to { opacity: 1; transform: translateY(0) scale(var(--rover-image-scale)); } }
-@keyframes model-canvas-reveal { from { opacity: 0; } to { opacity: 1; } }
