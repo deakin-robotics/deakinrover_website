@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import {
   motion,
   useMotionValueEvent,
@@ -100,9 +99,10 @@ function RoverPanel({ name, image, imageAlt, opacity, active, accent, meta, href
       <div className="rover-showcase-copy">
         <h1>{name}</h1>
         <p className="home-meta">{meta}</p>
-        <Link className="button button--light" href={href} tabIndex={active ? 0 : -1}>
+        {/* Intentional full reload: reset the 3D scene on rover entry. */}
+        <a className="button button--light" href={href} tabIndex={active ? 0 : -1}>
           Explore {name} <span aria-hidden="true">↗</span>
-        </Link>
+        </a>
       </div>
     </motion.div>
   );

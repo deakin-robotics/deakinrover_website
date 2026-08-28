@@ -1,0 +1,20 @@
+# Keep repository text files consistent across Windows and WSL.
+* text=auto eol=lf
+
+# Preserve Windows-native script line endings.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# Rover models and media are binary assets.
+*.glb binary
+*.gltf binary
+*.gif binary
+*.ico binary
+*.jpeg binary
+*.jpg binary
+*.mp4 binary
+*.png binary
+*.webp binary
+*.woff binary
+*.woff2 binary
