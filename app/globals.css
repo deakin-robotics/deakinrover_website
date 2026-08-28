@@ -208,7 +208,7 @@ h3 { font-size: clamp(2rem, 4vw, 4rem); line-height: 0.95; margin-bottom: 0; }
 .borealis-media-grid figcaption { color: var(--muted); font-family: 'DM Mono', monospace; font-size: .62rem; letter-spacing: .05em; padding-top: .8rem; text-transform: uppercase; }
 
 /* Product and mission index */
-.rover-showcase { height: 220vh; position: relative; }
+.rover-showcase { height: 200vh; position: relative; }
 .rover-showcase-stage { height: 100vh; overflow: hidden; position: sticky; top: 0; }
 .rover-showcase-panel { inset: 0; position: absolute; transition: opacity 120ms linear; }
 .rover-showcase-panel::after { background: linear-gradient(90deg, rgba(9,9,9,.9) 0%, rgba(9,9,9,.48) 45%, rgba(9,9,9,.2) 100%), linear-gradient(0deg, rgba(9,9,9,.82) 0%, transparent 50%); content: ''; inset: 0; pointer-events: none; position: absolute; z-index: 1; }
@@ -221,7 +221,7 @@ h3 { font-size: clamp(2rem, 4vw, 4rem); line-height: 0.95; margin-bottom: 0; }
 .rover-showcase-panel--blue .rover-showcase-copy h1 { color: var(--blue); }
 .rover-showcase-panel--orange .rover-showcase-copy h1 { color: var(--orange); }
 .rover-showcase .hero-scroll { left: auto; right: 7vw; z-index: 3; }
-.homepage-content-sequence { height: 300vh; position: relative; }
+.homepage-content-sequence { height: 220vh; position: relative; }
 .homepage-content-stage { height: 100vh; overflow: hidden; position: sticky; top: 0; }
 .homepage-content-panel { inset: 0; position: absolute; }
 .homepage-content-panel > .programme-section, .homepage-content-panel > .team-section { height: 100%; min-height: 100%; overflow: hidden; }

@@ -25,7 +25,7 @@ export function HomepageContentSequence() {
       return progress >= 0.5 ? 1 : 0;
     }
 
-    return clamp((progress - 0.4) / 0.25, 0, 1);
+    return clamp((progress - 0.35) / 0.30, 0, 1);
   });
   const programmeOpacity = useTransform(transition, (value) => 1 - value);
   const [activeSection, setActiveSection] = useState<"programme" | "team">("programme");
