@@ -9,51 +9,62 @@ import { BorealisModel } from "@/components/borealis-model";
 
 const systems = [
   {
-    name: "Chassis",
+    name: "Firmware",
     details: [
-      "1.0 × 0.9 × 0.5 m footprint",
-      "Approximately 40 kg including payloads",
-      "Rocker-bogie suspension · non-pneumatic wheels",
+      "ROS 2 Jazzy Jalisco for controls and perception",
+      "Nav2 autonomy stack on Jetson Orin Nano Super",
+      "Wheel encoder odometry and IMU integration for localisation",
+      "Depth data used for obstacle detection and pose correction",
+      "Intel RealSense D435i depth camera for perception",
+    ],
+  },
+  {
+    name: "Command",
+    details: [
+      "Two front-facing LattePanda 5 MP UVC cameras",
+      "Third LattePanda camera mounted at the end effector",
+      "640×480 at 30 fps using MJPEG",
+      "Camera streams published as ROS topics to a web-based GUI",
+      "RS485 bus for drivetrain motor control",
     ],
   },
   {
     name: "Power",
     details: [
-      "24 V power bus · 5 V logic bus",
-      "6S 20 Ah battery · BMS",
-      "E-stop · power data logger",
+      "Central 24 V DC power bus",
+      "Regulated 5 V logic bus for Raspberry Pi 5 and ESP32",
+      "6S 20 Ah battery",
+      "Power distribution board with E-stop battery isolation",
+      "Powerwerx Watt Meter and Daly Smart BMS",
     ],
   },
   {
-    name: "Perception",
+    name: "Chassis",
     details: [
-      "Three 5 MP UVC cameras",
-      "640×480 at 30 fps",
-      "Approximately 140° field of view",
-    ],
-  },
-  {
-    name: "Communications",
-    details: [
-      "5 GHz wireless bridge",
-      "Video, telemetry, and control data",
-      "Ubiquiti airMAX radio system",
+      "1.0 × 0.9 × 0.5 m rover footprint",
+      "Six-wheel rocker-bogie configuration",
+      "Four-wheel independent rocker suspension with steerable wheels",
+      "Turn-in-place and crab-motion steering configurations",
+      "Non-pneumatic TPU honeycomb tyre with rigid ABS hub",
     ],
   },
   {
     name: "Manipulation",
     details: [
       "6-DOF serial robotic arm",
-      "Carbon-fibre links · CAN bus control",
-      "Interchangeable gripper and scooper end-effectors",
+      "Carbon-fibre links with aluminium hubs and plates",
+      "Forward and inverse kinematics via Logitech gamepad",
+      "CAN bus control for arm joints and end-effectors",
+      "End-effector load capacity of at least 5 kg",
     ],
   },
   {
-    name: "Autonomy",
+    name: "Payload",
     details: [
-      "ROS 2 Jazzy · Nav2 stack",
-      "Jetson Orin Nano Super · RealSense D435i",
-      "Integration in progress at SAR submission",
+      "Modular aluminium extrusion mounting interface",
+      "Interchangeable gripper and scooper end-effectors",
+      "Paver payload with one-way valve interlocking system",
+      "Twist-lock hose connector compatible with the arm end-effector",
     ],
   },
 ];
@@ -187,6 +198,19 @@ export function BorealisPage() {
             </div>
             <figcaption>Borealis at the Post Landing Task</figcaption>
           </figure>
+        </div>
+      </section>
+
+      <section className="borealis-video page-section" aria-label="2026 competition compilation">
+        <p className="borealis-video-title">2026 Competition Compilation</p>
+        <div className="borealis-media-video">
+          <iframe
+            src="https://www.youtube.com/embed/pFhHjHLlFj8"
+            title="Deakin Rover Team 2026 competition compilation"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+          />
         </div>
       </section>
     </main>

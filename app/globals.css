@@ -169,7 +169,10 @@ h3 { font-size: clamp(2rem, 4vw, 4rem); line-height: 0.95; margin-bottom: 0; }
 .borealis-explorer-copy .back-link { margin-bottom: 6rem; margin-top: 2rem; position: relative; top: 5rem; }
 .borealis-explorer-copy h1 { color: var(--rover-accent); margin-bottom: 1.5rem; }
 .borealis-system-controls { margin-top: 4rem; max-width: 680px; }
-.borealis-system-list { border-bottom: 1px solid var(--line); border-top: 1px solid var(--line); display: flex; gap: 1.5rem; overflow-x: auto; }
+.borealis-system-list { border-bottom: 1px solid var(--line); border-top: 1px solid var(--line); display: flex; gap: 1.5rem; overflow-x: auto; scrollbar-color: var(--muted) transparent; scrollbar-width: thin; }
+.borealis-system-list::-webkit-scrollbar { height: 3px; }
+.borealis-system-list::-webkit-scrollbar-track { background: transparent; }
+.borealis-system-list::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 999px; }
 .borealis-system-button { align-items: center; background: transparent; border: 0; border-bottom: 2px solid transparent; color: var(--muted); cursor: pointer; display: flex; flex: 0 0 auto; font-family: 'DM Mono', monospace; font-size: .68rem; letter-spacing: .06em; padding: 1rem 0 .9rem; text-align: left; text-transform: uppercase; transition: border-color 180ms ease, color 180ms ease; }
 .borealis-system-button:hover, .borealis-system-button:focus-visible, .borealis-system-button[aria-selected='true'] { color: var(--rover-accent); }
 .borealis-system-button[aria-selected='true'] { border-bottom-color: var(--rover-accent); }
@@ -203,8 +206,12 @@ h3 { font-size: clamp(2rem, 4vw, 4rem); line-height: 0.95; margin-bottom: 0; }
 .borealis-media-item--field .borealis-media-image { aspect-ratio: 1.6 / 1; }
 .borealis-media-item--team .borealis-media-image { aspect-ratio: 1.1 / 1; }
 .borealis-media-item--detail .borealis-media-image { aspect-ratio: 1.25 / 1; }
+.borealis-media-video { aspect-ratio: 16 / 9; background: #111; overflow: hidden; position: relative; }
+.borealis-media-video iframe { border: 0; height: 100%; left: 0; position: absolute; top: 0; width: 100%; }
+.borealis-video-title { color: var(--muted); font-family: 'DM Mono', monospace; font-size: .62rem; letter-spacing: .05em; margin: 0 0 .8rem; text-transform: uppercase; }
 .borealis-media-image img { object-fit: cover; }
 .borealis-media-grid figcaption { color: var(--muted); font-family: 'DM Mono', monospace; font-size: .62rem; letter-spacing: .05em; padding-top: .8rem; text-transform: uppercase; }
+.borealis-video { padding-bottom: 10rem; padding-top: 0; }
 
 /* Product and mission index */
 .rover-showcase { height: 200vh; position: relative; }
