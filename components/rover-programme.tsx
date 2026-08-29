@@ -14,9 +14,9 @@ const programmeEntries: ProgrammeEntry[] = [
     year: "2025",
     name: "AURORA",
     details: [
-      "6-wheel rocker-bogie",
-      "V-slot aluminium chassis",
+      "6-wheel rocker-bogie · V-slot aluminium chassis",
       "ROS 2 Humble · Raspberry Pi 5",
+      "First competition entry",
       "Foundation rover",
     ],
     href: "/rovers/aurora",
@@ -26,9 +26,9 @@ const programmeEntries: ProgrammeEntry[] = [
     year: "2026",
     name: "BOREALIS",
     details: [
+      "6-wheel rocker-bogie · 1.0 × 0.9 × 0.5 m footprint",
       "ROS 2 Jazzy · Nav2",
       "6-DOF robotic arm · CAN bus",
-      "5 GHz wireless bridge · 1.0 × 0.9 m footprint",
     ],
     href: "/rovers/borealis",
     fullReload: true,
@@ -39,8 +39,8 @@ const programmeEntries: ProgrammeEntry[] = [
     name: "CHASMATA",
     details: [
       "4-wheel rocker suspension · modular payloads",
-      "6-DOF robotic arm · science payload",
       "ROS 2 Jazzy · 3D mapping · Nav2",
+      "6-DOF robotic arm · science payload",
       "Currently in development",
     ],
     accent: "yellow",
