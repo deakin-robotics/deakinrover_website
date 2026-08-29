@@ -6,32 +6,21 @@ import {
   useMotionValueEvent,
   useReducedMotion,
   useScroll,
-  useTransform,
-  type MotionValue,
 } from "motion/react";
 import { useRef, useState, type ReactNode } from "react";
 
-const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
+const roverTransitionPoint = 0.3;
 
 export function RoverShowcase() {
   const showcaseRef = useRef<HTMLElement>(null);
-  const shouldReduceMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: showcaseRef,
     offset: ["start start", "end end"],
   });
-  const transition = useTransform(scrollYProgress, (progress) => {
-    if (shouldReduceMotion) {
-      return progress >= 0.5 ? 1 : 0;
-    }
-
-    return clamp((progress - 0.30) / 0.32, 0, 1);
-  });
-  const borealisOpacity = useTransform(transition, (value) => 1 - value);
   const [activeRover, setActiveRover] = useState<"borealis" | "aurora">("borealis");
 
-  useMotionValueEvent(transition, "change", (value) => {
-    const nextRover = value < 0.5 ? "borealis" : "aurora";
+  useMotionValueEvent(scrollYProgress, "change", (progress) => {
+    const nextRover = progress < roverTransitionPoint ? "borealis" : "aurora";
 
     setActiveRover((currentRover) => currentRover === nextRover ? currentRover : nextRover);
   });
@@ -43,7 +32,6 @@ export function RoverShowcase() {
           name="Borealis"
           image="/assets/borealis/hero-16x9.png"
           imageAlt="Borealis rover operating on sandy terrain"
-          opacity={borealisOpacity}
           active={activeRover === "borealis"}
           accent="blue"
           meta={
@@ -59,7 +47,6 @@ export function RoverShowcase() {
           name="AURORA"
           image="/assets/aurora/hero-16x9-balanced.png"
           imageAlt="AURORA rover"
-          opacity={transition}
           active={activeRover === "aurora"}
           accent="orange"
           meta={
@@ -81,18 +68,22 @@ type RoverPanelProps = {
   name: string;
   image: string;
   imageAlt: string;
-  opacity: MotionValue<number>;
   active: boolean;
   accent: "blue" | "orange";
   meta: ReactNode;
   href: string;
 };
 
-function RoverPanel({ name, image, imageAlt, opacity, active, accent, meta, href }: RoverPanelProps) {
+function RoverPanel({ name, image, imageAlt, active, accent, meta, href }: RoverPanelProps) {
+  const shouldReduceMotion = useReducedMotion();
+
   return (
     <motion.div
       className={`rover-showcase-panel rover-showcase-panel--${accent}`}
-      style={{ opacity, pointerEvents: active ? "auto" : "none" }}
+      initial={false}
+      animate={{ opacity: active ? 1 : 0 }}
+      transition={{ duration: shouldReduceMotion ? 0 : 0.5, ease: "easeInOut" }}
+      style={{ pointerEvents: active ? "auto" : "none" }}
       aria-hidden={!active}
     >
       <Image className="rover-showcase-image" src={image} alt={imageAlt} fill priority={name === "Borealis"} sizes="100vw" />
