@@ -79,30 +79,37 @@ type RoverPanelProps = {
 
 function RoverPanel({ name, image, imageAlt, active, accent, exitDirection, meta, href }: RoverPanelProps) {
   const shouldReduceMotion = useReducedMotion();
+  const [isInitialRender, setIsInitialRender] = useState(name === "Borealis");
+  const transitionDuration = name === "Borealis" && isInitialRender ? 0.7 : 0.5;
 
   return (
     <motion.div
       className={`rover-showcase-panel rover-showcase-panel--${accent}`}
       initial={{ opacity: 0 }}
       animate={{ opacity: active ? 1 : 0 }}
-      transition={{ duration: shouldReduceMotion ? 0 : 0.5, ease: "easeInOut" }}
+      transition={{ duration: shouldReduceMotion ? 0 : transitionDuration, ease: "easeInOut" }}
+      onAnimationComplete={() => {
+        if (name === "Borealis" && isInitialRender) {
+          setIsInitialRender(false);
+        }
+      }}
       style={{ pointerEvents: active ? "auto" : "none" }}
       aria-hidden={!active}
     >
       <motion.div
         className="rover-showcase-panel-content"
-        initial={false}
+        initial={{ y: active ? 16 : exitDirection === "up" ? -24 : 24 }}
         animate={{ y: active ? 0 : exitDirection === "up" ? -24 : 24 }}
-        transition={{ duration: shouldReduceMotion ? 0 : 0.5, ease: "easeInOut" }}
+        transition={{ duration: shouldReduceMotion ? 0 : transitionDuration, ease: "easeInOut" }}
       >
         <Image className="rover-showcase-image" src={image} alt={imageAlt} fill priority={name === "Borealis"} sizes="100vw" />
       </motion.div>
       <div className={`rover-showcase-panel-overlay rover-showcase-panel-overlay--${accent}`} aria-hidden="true" />
       <motion.div
         className="rover-showcase-panel-copy"
-        initial={false}
+        initial={{ y: active ? 16 : exitDirection === "up" ? -24 : 24 }}
         animate={{ y: active ? 0 : exitDirection === "up" ? -24 : 24 }}
-        transition={{ duration: shouldReduceMotion ? 0 : 0.5, ease: "easeInOut" }}
+        transition={{ duration: shouldReduceMotion ? 0 : transitionDuration, ease: "easeInOut" }}
       >
         <div className="rover-showcase-copy">
           <h1>{name}</h1>
