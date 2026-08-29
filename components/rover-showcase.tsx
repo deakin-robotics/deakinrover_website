@@ -34,6 +34,7 @@ export function RoverShowcase() {
           imageAlt="Borealis rover operating on sandy terrain"
           active={activeRover === "borealis"}
           accent="blue"
+          exitDirection="up"
           meta={
             <>
               2026 Australian Rover Challenge<br />
@@ -49,6 +50,7 @@ export function RoverShowcase() {
           imageAlt="AURORA rover"
           active={activeRover === "aurora"}
           accent="orange"
+          exitDirection="down"
           meta={
             <>
               2025 Australian Rover Challenge<br />
@@ -70,31 +72,47 @@ type RoverPanelProps = {
   imageAlt: string;
   active: boolean;
   accent: "blue" | "orange";
+  exitDirection: "up" | "down";
   meta: ReactNode;
   href: string;
 };
 
-function RoverPanel({ name, image, imageAlt, active, accent, meta, href }: RoverPanelProps) {
+function RoverPanel({ name, image, imageAlt, active, accent, exitDirection, meta, href }: RoverPanelProps) {
   const shouldReduceMotion = useReducedMotion();
 
   return (
     <motion.div
       className={`rover-showcase-panel rover-showcase-panel--${accent}`}
-      initial={false}
+      initial={{ opacity: 0 }}
       animate={{ opacity: active ? 1 : 0 }}
       transition={{ duration: shouldReduceMotion ? 0 : 0.5, ease: "easeInOut" }}
       style={{ pointerEvents: active ? "auto" : "none" }}
       aria-hidden={!active}
     >
-      <Image className="rover-showcase-image" src={image} alt={imageAlt} fill priority={name === "Borealis"} sizes="100vw" />
-      <div className="rover-showcase-copy">
-        <h1>{name}</h1>
-        <p className="home-meta">{meta}</p>
-        {/* Intentional full reload: reset the 3D scene on rover entry. */}
-        <a className="button button--light" href={href} tabIndex={active ? 0 : -1}>
-          Explore {name} <span aria-hidden="true">↗</span>
-        </a>
-      </div>
+      <motion.div
+        className="rover-showcase-panel-content"
+        initial={false}
+        animate={{ y: active ? 0 : exitDirection === "up" ? -24 : 24 }}
+        transition={{ duration: shouldReduceMotion ? 0 : 0.5, ease: "easeInOut" }}
+      >
+        <Image className="rover-showcase-image" src={image} alt={imageAlt} fill priority={name === "Borealis"} sizes="100vw" />
+      </motion.div>
+      <div className={`rover-showcase-panel-overlay rover-showcase-panel-overlay--${accent}`} aria-hidden="true" />
+      <motion.div
+        className="rover-showcase-panel-copy"
+        initial={false}
+        animate={{ y: active ? 0 : exitDirection === "up" ? -24 : 24 }}
+        transition={{ duration: shouldReduceMotion ? 0 : 0.5, ease: "easeInOut" }}
+      >
+        <div className="rover-showcase-copy">
+          <h1>{name}</h1>
+          <p className="home-meta">{meta}</p>
+          {/* Intentional full reload: reset the 3D scene on rover entry. */}
+          <a className="button button--light" href={href} tabIndex={active ? 0 : -1}>
+            Explore {name} <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </motion.div>
     </motion.div>
   );
 }
