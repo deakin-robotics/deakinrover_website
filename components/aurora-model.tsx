@@ -7,11 +7,11 @@ import { Vector3 } from "three";
 
 const modelPath = "/assets/aurora/model/aurora-bare-bones-placeholder.glb";
 
-type BorealisModelProps = {
+type AuroraModelProps = {
   activeSystem: number;
 };
 
-function RoverModel({ activeSystem, onReady }: BorealisModelProps & { onReady: () => void }) {
+function RoverModel({ activeSystem, onReady }: AuroraModelProps & { onReady: () => void }) {
   const { scene } = useGLTF(modelPath);
 
   return (
@@ -56,7 +56,7 @@ function isOrbitControlsState(controls: unknown): controls is OrbitControlsState
   return "target" in controls && "update" in controls;
 }
 
-function CameraFocus({ activeSystem, onReady }: BorealisModelProps & { onReady: () => void }) {
+function CameraFocus({ activeSystem, onReady }: AuroraModelProps & { onReady: () => void }) {
   const { camera, controls } = useThree();
   const bounds = useBounds();
   const previousSystem = useRef(activeSystem);
@@ -160,14 +160,14 @@ function RightSideFraming() {
   return null;
 }
 
-export function BorealisModel({ activeSystem }: BorealisModelProps) {
+export function AuroraModel({ activeSystem }: AuroraModelProps) {
   const [modelReady, setModelReady] = useState(false);
   const handleModelReady = useCallback(() => setModelReady(true), []);
 
   return (
     <div
       className={`borealis-model-placeholder${modelReady ? " borealis-model-placeholder--ready" : ""}`}
-      aria-label="Borealis 3D model placeholder"
+      aria-label="AURORA 3D model placeholder"
       role="img"
     >
       <Canvas
@@ -187,8 +187,8 @@ export function BorealisModel({ activeSystem }: BorealisModelProps) {
       </Canvas>
       <div className="model-grid" aria-hidden="true" />
       <div className="borealis-model-overlay" aria-hidden="true">
-        <span className="model-label">Borealis / 3D view</span>
-        <span className="model-status">Legacy rover model / placeholder</span>
+        <span className="model-label">AURORA / 3D view</span>
+        <span className="model-status">Bare-bones model / placeholder</span>
       </div>
     </div>
   );

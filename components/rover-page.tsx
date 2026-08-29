@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { AuroraPage } from "@/components/aurora-page";
 import { BorealisPage } from "@/components/borealis-page";
 import type { RoverData } from "@/lib/rover-data";
 
@@ -10,6 +11,10 @@ type RoverPageProps = {
 export function RoverPage({ rover }: RoverPageProps) {
   if (rover.slug === "borealis") {
     return <BorealisPage />;
+  }
+
+  if (rover.slug === "aurora") {
+    return <AuroraPage />;
   }
 
   return <GenericRoverPage rover={rover} />;
