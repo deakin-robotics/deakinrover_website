@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-import { RoverPage } from "@/components/rover-page";
+import { RoverPage } from "@/components/rovers/rover-page";
 import { roverData, type RoverSlug } from "@/lib/rover-data";
 
 type RoverRouteProps = {

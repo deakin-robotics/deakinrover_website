@@ -13,6 +13,10 @@ const teamPhotos = [
     src: "/assets/team/2026-borealis-team.jpg",
     alt: "Deakin Rover Team with Borealis at the Australian Rover Challenge 2026",
   },
+  {
+    src: "/assets/team/2025-aurora-team-event.jpg",
+    alt: "Deakin Rover Team with AURORA at a team event",
+  },
 ];
 
 export function TeamSection() {

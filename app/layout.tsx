@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import type { PropsWithChildren } from "react";
 
-import { SiteFooter } from "@/components/site-footer";
-import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/layout/site-footer";
+import { SiteHeader } from "@/components/layout/site-header";
 
 import "./globals.css";
 

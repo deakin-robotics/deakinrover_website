@@ -1,5 +1,5 @@
-import { RoverProgramme } from "@/components/rover-programme";
-import { TeamSection } from "@/components/team-section";
+import { RoverProgramme } from "@/components/home/rover-programme";
+import { TeamSection } from "@/components/home/team-section";
 
 export function HomepageContentSequence() {
 

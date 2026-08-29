@@ -1,7 +1,7 @@
 import Link from "next/link";
 
-import { AuroraPage } from "@/components/aurora-page";
-import { BorealisPage } from "@/components/borealis-page";
+import { AuroraPage } from "@/components/rovers/aurora-page";
+import { BorealisPage } from "@/components/rovers/borealis-page";
 import type { RoverData } from "@/lib/rover-data";
 
 type RoverPageProps = {

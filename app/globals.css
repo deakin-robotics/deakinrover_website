@@ -261,8 +261,9 @@ h3 { font-size: clamp(2rem, 4vw, 4rem); line-height: 0.95; margin-bottom: 0; }
 .programme-intro { color: #b9b9b5; font-size: clamp(.85rem, 1.25vw, 1.1rem); line-height: 1.6; margin: 1.8rem 0 0; max-width: 1100px; }
 .programme-intro span { display: block; white-space: nowrap; }
 .programme-timeline { display: grid; gap: 3rem; grid-template-columns: repeat(3, 1fr); margin-top: 4rem; position: relative; }
-.programme-timeline::before { border-top: 1px solid var(--line); content: ''; left: 0; position: absolute; right: 0; top: 3.05rem; }
+.programme-timeline-line { background: var(--line); height: 1px; left: 0; position: absolute; right: 0; top: 3.05rem; transform-origin: left center; }
 .programme-entry { padding-right: 2rem; position: relative; }
+.programme-entry-indicator { position: relative; }
 .programme-year, .programme-result { font-family: 'DM Mono', monospace; font-size: .68rem; letter-spacing: .07em; text-transform: uppercase; }
 .programme-year { margin-bottom: 1rem; }
 .programme-marker { background: var(--paper); border-radius: 50%; display: block; height: .65rem; margin-bottom: 2rem; position: relative; width: .65rem; z-index: 1; }
@@ -360,7 +361,7 @@ h3 { font-size: clamp(2rem, 4vw, 4rem); line-height: 0.95; margin-bottom: 0; }
   .programme-section { padding-bottom: 7rem; padding-top: 7rem; }
   .programme-heading { max-width: 750px; }
   .programme-timeline { display: block; margin-top: 3rem; padding-left: 1.5rem; }
-  .programme-timeline::before { border-left: 1px solid var(--line); border-top: 0; bottom: 0; left: .25rem; right: auto; top: 0; }
+  .programme-timeline-line { bottom: 0; height: auto; left: .25rem; right: auto; top: 0; transform-origin: top center; width: 1px; }
   .programme-entry { padding: 0 0 3rem 1.5rem; }
   .programme-entry:not(:last-child) { margin-bottom: 1rem; }
   .programme-marker { left: -1.82rem; margin-bottom: 1.4rem; position: absolute; top: .2rem; }
