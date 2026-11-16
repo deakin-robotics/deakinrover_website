@@ -4,37 +4,72 @@ import { useCallback, useEffect, useRef, useState, type ReactNode } from "react"
 import { flushSync } from "react-dom";
 import { FeedFocusedContext } from "./feed-context";
 
+type FeedMode = "normal" | "focused" | "exiting";
+
+function measureNormalHeight(page: HTMLElement, post: HTMLElement, feed: HTMLElement, heading: HTMLElement) {
+  const feedTransition = feed.style.transition;
+  const headingTransition = heading.style.transition;
+  try {
+    feed.style.transition = "none";
+    heading.style.transition = "none";
+    page.classList.remove("media-page--focused");
+    return post.getBoundingClientRect().height;
+  } finally {
+    page.classList.add("media-page--focused");
+    post.getBoundingClientRect();
+    feed.style.transition = feedTransition;
+    heading.style.transition = headingTransition;
+  }
+}
+
 export function FeedFocus({ children, hasPost }: { children: ReactNode; hasPost: boolean }) {
-  const [focused, setFocused] = useState(false);
-  const [exiting, setExiting] = useState(false);
+  const [mode, setMode] = useState<FeedMode>("normal");
   const lastWheel = useRef(0);
   const pageRef = useRef<HTMLElement>(null);
+  const animationRef = useRef<Animation | null>(null);
+  const focused = mode === "focused";
+  const exiting = mode === "exiting";
+
+  const enterFocus = useCallback(() => {
+    window.scrollTo({ top: 0, behavior: "auto" });
+    setMode("focused");
+  }, []);
 
   const exitFocus = useCallback(() => {
-    const post = pageRef.current?.querySelector<HTMLElement>(".instagram-post");
-    const feed = pageRef.current?.querySelector<HTMLElement>(".media-feed");
-    if (!post || !feed || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setFocused(false);
+    const page = pageRef.current;
+    const post = page?.querySelector<HTMLElement>(".instagram-post");
+    const feed = page?.querySelector<HTMLElement>(".media-feed");
+    const heading = page?.querySelector<HTMLElement>(".media-back");
+    if (!page || !post || !feed || !heading || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setMode("normal");
       return;
     }
 
     const startHeight = post.getBoundingClientRect().height;
-    const padding = getComputedStyle(feed);
-    const feedMaxWidth = parseFloat(padding.getPropertyValue("--media-feed-width"));
-    const targetWidth = Math.min(document.documentElement.clientWidth, feedMaxWidth) - parseFloat(padding.paddingLeft) - parseFloat(padding.paddingRight);
-    const copy = post.cloneNode(true) as HTMLElement;
-    Object.assign(copy.style, { position: "fixed", visibility: "hidden", width: `${targetWidth}px`, top: "0", left: "0", height: "auto" });
-    copy.querySelectorAll("video").forEach((video) => { video.removeAttribute("src"); video.load(); });
-    document.body.appendChild(copy);
-    const endHeight = copy.getBoundingClientRect().height;
-    copy.remove();
+    const endHeight = measureNormalHeight(page, post, feed, heading);
 
     post.style.height = `${endHeight}px`;
-    flushSync(() => { setExiting(true); setFocused(false); });
+    flushSync(() => setMode("exiting"));
     const animation = post.animate([{ height: `${startHeight}px` }, { height: `${endHeight}px` }], { duration: 500, easing: "ease" });
-    animation.onfinish = () => {
-      flushSync(() => setExiting(false));
+    animationRef.current = animation;
+    const finish = () => {
+      if (animationRef.current !== animation) return;
+      animationRef.current = null;
+      flushSync(() => setMode("normal"));
       post.style.removeProperty("height");
+    };
+    animation.onfinish = finish;
+    animation.oncancel = finish;
+  }, []);
+
+  useEffect(() => {
+    const finishOnResize = () => animationRef.current?.finish();
+    window.addEventListener("resize", finishOnResize);
+    return () => {
+      window.removeEventListener("resize", finishOnResize);
+      const animation = animationRef.current;
+      animationRef.current = null;
+      animation?.cancel();
     };
   }, []);
 
@@ -44,8 +79,7 @@ export function FeedFocus({ children, hasPost }: { children: ReactNode; hasPost:
       if (event.altKey || event.ctrlKey || event.metaKey || event.repeat || target?.closest("input, textarea, select, button, a, video, [contenteditable='true']")) return;
       if (event.key === "ArrowDown" && !focused && !exiting && hasPost) {
         event.preventDefault();
-        window.scrollTo({ top: 0, behavior: "auto" });
-        setFocused(true);
+        enterFocus();
       } else if ((event.key === "ArrowUp" || event.key === "Escape") && focused) {
         event.preventDefault();
         exitFocus();
@@ -53,7 +87,7 @@ export function FeedFocus({ children, hasPost }: { children: ReactNode; hasPost:
     }
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [focused, hasPost, exiting, exitFocus]);
+  }, [focused, hasPost, exiting, enterFocus, exitFocus]);
 
   useEffect(() => {
     function onWheel(event: WheelEvent) {
@@ -67,15 +101,14 @@ export function FeedFocus({ children, hasPost }: { children: ReactNode; hasPost:
       lastWheel.current = now;
       if (!isNewGesture) return;
       if (event.deltaY > 0 && !focused) {
-        window.scrollTo({ top: 0, behavior: "auto" });
-        setFocused(true);
+        enterFocus();
       } else if (event.deltaY < 0 && focused) {
         exitFocus();
       }
     }
     window.addEventListener("wheel", onWheel, { passive: false });
     return () => window.removeEventListener("wheel", onWheel);
-  }, [focused, hasPost, exiting, exitFocus]);
+  }, [focused, hasPost, exiting, enterFocus, exitFocus]);
 
   return <FeedFocusedContext.Provider value={focused}><main ref={pageRef} className={`media-page${focused ? " media-page--focused" : ""}${exiting ? " media-page--exiting" : ""}`}>{children}</main></FeedFocusedContext.Provider>;
 }

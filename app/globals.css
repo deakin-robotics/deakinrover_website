@@ -54,7 +54,7 @@ button { font: inherit; }
 .media-back .back-link { justify-self: start; margin-bottom: 0; }
 .media-back h1 { font-size: clamp(1.75rem, 4vw, 3.5rem); letter-spacing: -.05em; line-height: 1.1; margin: 0; text-align: center; }
 .media-back h1 span { background: linear-gradient(90deg, #feda75, #fa7e1e, #d62976, #b272ed, #8e9cff); background-clip: text; color: transparent; }
-.media-feed { --media-feed-width: 900px; display: grid; gap: 3rem; margin: 0 auto; max-width: var(--media-feed-width); padding-bottom: 8rem; padding-top: 3rem; position: relative; transition: max-width 500ms ease, padding-top 500ms ease; }
+.media-feed { display: grid; gap: 3rem; margin: 0 auto; max-width: 900px; padding-bottom: 8rem; padding-top: 3rem; position: relative; transition: max-width 500ms ease, padding-top 500ms ease; }
 .media-page--focused .media-back .back-link, .media-page--focused .media-back h1 { opacity: 0; pointer-events: none; transform: translateY(-12px); visibility: hidden; transition: opacity 300ms ease, transform 300ms ease, visibility 0s 300ms; }
 .media-page--focused .media-back { height: 84px; padding-top: 84px; }
 .media-page--focused .media-feed { max-width: 1080px; padding-bottom: 0; padding-top: 0; }
