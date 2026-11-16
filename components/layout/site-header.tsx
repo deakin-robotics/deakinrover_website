@@ -33,6 +33,11 @@ export function SiteHeader() {
       <NavigationMenu.Root className="site-nav" aria-label="Primary navigation">
         <NavigationMenu.List className="site-nav-list">
           <NavigationMenu.Item>
+            <NavigationMenu.Link asChild>
+              <Link href="/">Home</Link>
+            </NavigationMenu.Link>
+          </NavigationMenu.Item>
+          <NavigationMenu.Item>
             <NavigationMenu.Trigger className="nav-dropdown-trigger">Rovers</NavigationMenu.Trigger>
             <NavigationMenu.Content className="nav-dropdown-menu">
               <ul>
@@ -57,6 +62,11 @@ export function SiteHeader() {
           <NavigationMenu.Item>
             <NavigationMenu.Link asChild>
               <Link href="/support">Sponsor</Link>
+            </NavigationMenu.Link>
+          </NavigationMenu.Item>
+          <NavigationMenu.Item>
+            <NavigationMenu.Link asChild>
+              <Link href="/media">Media</Link>
             </NavigationMenu.Link>
           </NavigationMenu.Item>
         </NavigationMenu.List>

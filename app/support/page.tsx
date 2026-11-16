@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
-import { SupportReveal } from "@/components/support/support-reveal";
+import { SupportReveal } from "@/app/support/_components/support-reveal";
 
 export const metadata: Metadata = {
   title: "Support | Deakin Rover Team",

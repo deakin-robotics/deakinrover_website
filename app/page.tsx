@@ -1,7 +1,7 @@
 import { BackToTop } from "@/components/layout/back-to-top";
-import { HomepageContentSequence } from "@/components/home/homepage-content-sequence";
-import { PartnerNote } from "@/components/home/partner-note";
-import { RoverShowcase } from "@/components/home/rover-showcase";
+import { HomepageContentSequence } from "@/app/_components/homepage-content-sequence";
+import { PartnerNote } from "@/app/_components/partner-note";
+import { RoverShowcase } from "@/app/_components/rover-showcase";
 
 export default function HomePage() {
   return (

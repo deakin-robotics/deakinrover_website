@@ -48,6 +48,7 @@ button { font: inherit; }
 .button span, .arrow-link { font-size: 1rem; margin-left: 0.5rem; }
 
 .page-section { margin: 0 auto; max-width: var(--max-width); padding-left: 7vw; padding-right: 7vw; }
+.media-page { min-height: 100vh; }
 .hero { align-items: center; display: grid; gap: 7vw; grid-template-columns: minmax(0, 0.85fr) minmax(420px, 1.15fr); min-height: 100vh; padding-bottom: 7rem; padding-top: 10rem; position: relative; }
 .hero-copy { max-width: 580px; position: relative; z-index: 1; }
 .eyebrow { color: var(--muted); font-family: 'DM Mono', monospace; font-size: 0.65rem; letter-spacing: 0.09em; margin: 0 0 1.5rem; text-transform: uppercase; }
