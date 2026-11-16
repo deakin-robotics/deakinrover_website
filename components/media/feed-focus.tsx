@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import { flushSync } from "react-dom";
+import { FeedFocusedContext } from "./feed-context";
 
 export function FeedFocus({ children, hasPost }: { children: ReactNode; hasPost: boolean }) {
   const [focused, setFocused] = useState(false);
@@ -19,7 +20,8 @@ export function FeedFocus({ children, hasPost }: { children: ReactNode; hasPost:
 
     const startHeight = post.getBoundingClientRect().height;
     const padding = getComputedStyle(feed);
-    const targetWidth = Math.min(window.innerWidth, 900) - parseFloat(padding.paddingLeft) - parseFloat(padding.paddingRight);
+    const feedMaxWidth = parseFloat(padding.getPropertyValue("--media-feed-width"));
+    const targetWidth = Math.min(document.documentElement.clientWidth, feedMaxWidth) - parseFloat(padding.paddingLeft) - parseFloat(padding.paddingRight);
     const copy = post.cloneNode(true) as HTMLElement;
     Object.assign(copy.style, { position: "fixed", visibility: "hidden", width: `${targetWidth}px`, top: "0", left: "0", height: "auto" });
     copy.querySelectorAll("video").forEach((video) => { video.removeAttribute("src"); video.load(); });
@@ -75,5 +77,5 @@ export function FeedFocus({ children, hasPost }: { children: ReactNode; hasPost:
     return () => window.removeEventListener("wheel", onWheel);
   }, [focused, hasPost, exiting, exitFocus]);
 
-  return <main ref={pageRef} className={`media-page${focused ? " media-page--focused" : ""}${exiting ? " media-page--exiting" : ""}`}>{children}</main>;
+  return <FeedFocusedContext.Provider value={focused}><main ref={pageRef} className={`media-page${focused ? " media-page--focused" : ""}${exiting ? " media-page--exiting" : ""}`}>{children}</main></FeedFocusedContext.Provider>;
 }
