@@ -157,7 +157,10 @@ h3 { font-size: clamp(2rem, 4vw, 4rem); line-height: 0.95; margin-bottom: 0; }
 .support-contact-copy { color: #b9b9b5; font-size: 1.1rem; line-height: 1.65; max-width: 570px; }
 .support-contact-links { align-items: center; display: flex; flex-wrap: wrap; gap: 1.5rem 2rem; margin-top: 2.5rem; }
 .support-contact h2 { color: var(--blue); }
-.support-contact-panel { margin: 0 auto; max-width: calc(var(--max-width) - 14vw); }
+.support-contact-layout { align-items: center; display: grid; gap: 4rem; grid-template-columns: 1fr 1fr; margin: 0 auto; max-width: calc(var(--max-width) - 14vw); }
+.support-contact-media { overflow: hidden; }
+.support-contact-media picture, .support-contact-media img { display: block; width: 100%; }
+.support-contact-media img { height: auto; }
 .support-page a:focus-visible { outline: 2px solid var(--blue); outline-offset: 4px; }
 
 .rover-page { --rover-accent: var(--blue); background: var(--black); }
@@ -362,6 +365,7 @@ h3 { font-size: clamp(2rem, 4vw, 4rem); line-height: 0.95; margin-bottom: 0; }
   .support-benefit-card { min-height: 0; }
   .support-benefit h3 { margin-top: 2rem; }
   .support-contact { padding-bottom: 7rem; padding-top: 7rem; }
+  .support-contact-layout { gap: 3rem; grid-template-columns: 1fr; max-width: none; }
   .back-link { margin-bottom: 3rem; }
   .borealis-explorer-copy .back-link { margin-bottom: 3rem; top: 0; }
   .explorer-header { align-items: start; display: block; margin-bottom: 2.5rem; }

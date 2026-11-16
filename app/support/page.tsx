@@ -68,6 +68,7 @@ export default function SupportPage() {
       </section>
 
       <section className="support-contact page-section">
+        <div className="support-contact-layout">
         <SupportReveal className="support-contact-panel">
           <p className="eyebrow">03 / Get in touch</p>
           <h2>Let’s build something together.</h2>
@@ -77,6 +78,13 @@ export default function SupportPage() {
             <a className="text-link" href="https://instagram.com/deakinroverteam">Find us on Instagram <span aria-hidden="true">↗</span></a>
           </div>
         </SupportReveal>
+        <SupportReveal className="support-contact-media">
+          <picture>
+            <source media="(prefers-reduced-motion: no-preference)" srcSet="/assets/support/borealis-in-action.gif" />
+            <Image src="/assets/support/borealis-in-action-still.jpg" alt="Borealis rover on the field at the Australian Rover Challenge" width={426} height={240} />
+          </picture>
+        </SupportReveal>
+        </div>
       </section>
     </main>
   );
