@@ -10,6 +10,23 @@ type InstagramMedia = {
   timestamp: string;
 };
 
+export async function getInstagramProfilePicture(): Promise<string | undefined> {
+  const token = process.env.INSTAGRAM_ACCESS_TOKEN;
+  if (!token) return undefined;
+
+  try {
+    const response = await fetch("https://graph.facebook.com/v27.0/17841472163255475?fields=profile_picture_url", {
+      headers: { Authorization: `Bearer ${token}` },
+      next: { revalidate: 300 },
+    });
+    if (!response.ok) return undefined;
+    const profile: { profile_picture_url?: string } = await response.json();
+    return profile.profile_picture_url;
+  } catch {
+    return undefined;
+  }
+}
+
 export async function getInstagramPosts(): Promise<InstagramMedia[] | null> {
   const token = process.env.INSTAGRAM_ACCESS_TOKEN;
   if (!token) return null;

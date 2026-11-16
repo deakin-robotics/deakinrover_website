@@ -4,12 +4,12 @@ import Link from "next/link";
 import { BackToTop } from "@/components/layout/back-to-top";
 import { InstagramPost } from "@/components/media/instagram-post";
 import { LinkedInPost } from "@/components/media/linkedin-post";
-import { getInstagramPosts } from "@/lib/instagram";
+import { getInstagramPosts, getInstagramProfilePicture } from "@/lib/instagram";
 
 export const metadata: Metadata = { title: "Media | Deakin Rover Team" };
 
 export default async function MediaPage() {
-  const posts = await getInstagramPosts();
+  const [posts, profilePicture] = await Promise.all([getInstagramPosts(), getInstagramProfilePicture()]);
   return (
     <main className="media-page">
       <div className="media-back page-section">
@@ -21,6 +21,7 @@ export default async function MediaPage() {
           <InstagramPost
             key={post.id}
             username="deakinrobotics"
+            profilePicture={profilePicture}
             image={post.media_type === "VIDEO" ? post.thumbnail_url : post.media_url}
             video={post.media_type === "VIDEO" ? post.media_url : undefined}
             caption={post.caption ?? ""}
