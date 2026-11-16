@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { BackToTop } from "@/components/layout/back-to-top";
+import { FeedFocus } from "@/components/media/feed-focus";
 import { InstagramPost } from "@/components/media/instagram-post";
-import { LinkedInPost } from "@/components/media/linkedin-post";
 import { getInstagramPosts, getInstagramProfilePicture } from "@/lib/instagram";
 
 export const metadata: Metadata = { title: "Media | Deakin Rover Team" };
@@ -11,13 +10,13 @@ export const metadata: Metadata = { title: "Media | Deakin Rover Team" };
 export default async function MediaPage() {
   const [posts, profilePicture] = await Promise.all([getInstagramPosts(), getInstagramProfilePicture()]);
   return (
-    <main className="media-page">
+    <FeedFocus hasPost={Boolean(posts?.length)}>
       <div className="media-back page-section">
         <Link className="back-link" href="/">← Home</Link>
         <h1>Club <span>Feed</span></h1>
       </div>
       <section className="media-feed page-section" aria-label="Social media feed">
-        {posts === null ? <p>Instagram posts are temporarily unavailable. <a href="https://www.instagram.com/deakinrobotics/">Visit our Instagram</a>.</p> : posts.map((post) => (
+        {posts === null ? <p>Instagram posts are temporarily unavailable. <a href="https://www.instagram.com/deakinrobotics/">Visit our Instagram</a>.</p> : posts.slice(0, 1).map((post) => (
           <InstagramPost
             key={post.id}
             username="deakinrobotics"
@@ -29,14 +28,7 @@ export default async function MediaPage() {
             postUrl={post.permalink}
           />
         ))}
-        <LinkedInPost
-          username="NASA - National Aeronautics and Space Administration"
-          caption="NASA shares a Hubble image of a bright star and its companion in the Orion Nebula."
-          postUrl="https://www.linkedin.com/posts/nasa_have-a-stellar-fourth-of-july-our-hubble-activity-7346980273567268865-CcVK"
-          isSample
-        />
       </section>
-      <BackToTop />
-    </main>
+    </FeedFocus>
   );
 }
