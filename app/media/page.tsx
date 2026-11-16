@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { BackToTop } from "@/components/layout/back-to-top";
 import { InstagramPost } from "@/components/media/instagram-post";
 import { LinkedInPost } from "@/components/media/linkedin-post";
 import { getInstagramPosts } from "@/lib/instagram";
@@ -13,6 +14,7 @@ export default async function MediaPage() {
     <main className="media-page">
       <div className="media-back page-section">
         <Link className="back-link" href="/">← Home</Link>
+        <h1>Club <span>Feed</span></h1>
       </div>
       <section className="media-feed page-section" aria-label="Social media feed">
         {posts === null ? <p>Instagram posts are temporarily unavailable. <a href="https://www.instagram.com/deakinrobotics/">Visit our Instagram</a>.</p> : posts.map((post) => (
@@ -33,6 +35,7 @@ export default async function MediaPage() {
           isSample
         />
       </section>
+      <BackToTop />
     </main>
   );
 }

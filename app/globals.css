@@ -49,8 +49,10 @@ button { font: inherit; }
 
 .page-section { margin: 0 auto; max-width: var(--max-width); padding-left: 7vw; padding-right: 7vw; }
 .media-page { min-height: 100vh; }
-.media-back { padding-top: 6.5rem; }
-.media-back .back-link { margin-bottom: 0; }
+.media-back { align-items: center; display: grid; grid-template-columns: 1fr auto 1fr; padding-top: 6.5rem; }
+.media-back .back-link { justify-self: start; margin-bottom: 0; }
+.media-back h1 { font-size: clamp(1.75rem, 4vw, 3.5rem); letter-spacing: -.05em; line-height: 1.1; margin: 0; text-align: center; }
+.media-back h1 span { background: linear-gradient(90deg, #feda75, #fa7e1e, #d62976, #b272ed, #8e9cff); background-clip: text; color: transparent; }
 .media-feed { display: grid; gap: 3rem; margin: 0 auto; max-width: 820px; padding-bottom: 8rem; padding-top: 3rem; }
 .instagram-post { background: #101010; border: 1px solid #292929; border-radius: 4px; overflow: hidden; }
 .instagram-post-header { align-items: center; display: flex; justify-content: space-between; padding: .9rem 1rem; }
