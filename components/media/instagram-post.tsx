@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { InstagramVideo } from "./instagram-video";
 import { PostCaption } from "./post-caption";
 
 type InstagramPostProps = {
@@ -24,7 +25,7 @@ export function InstagramPost({ username, profilePicture, image, video, caption,
         <a className="instagram-post-open" href={postUrl} target="_blank" rel="noopener noreferrer" aria-label="Open post on Instagram">↗</a>
       </header>
       {(image || video) && <div className="instagram-post-media">
-        {video ? <video src={video} poster={image} controls playsInline preload="none" aria-label={`${username} video post`} /> : image && <Image src={image} alt="Instagram post from Deakin Competitive Robotics" fill sizes="(max-width: 850px) 88vw, 700px" unoptimized />}
+        {video ? <InstagramVideo src={video} poster={image} username={username} /> : image && <Image src={image} alt="Instagram post from Deakin Competitive Robotics" fill sizes="(max-width: 850px) 88vw, 700px" unoptimized />}
       </div>}
       <div className="instagram-post-content">
         <a className="instagram-post-view" href={postUrl} target="_blank" rel="noopener noreferrer">View on Instagram <span aria-hidden="true">↗</span></a>
