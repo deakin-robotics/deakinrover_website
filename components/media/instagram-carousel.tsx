@@ -1,10 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import type { InstagramChild } from "@/lib/instagram";
-import { FeedFocusedContext } from "./feed-context";
+import { FeedFocusedContext, MediaPreloadContext } from "./feed-context";
 import { InstagramVideo } from "./instagram-video";
+import { previewImage, usePreloadImage } from "./use-preload-image";
 
 function Slide({ item, index, username }: { item: InstagramChild; index: number; username: string }) {
   return item.media_type === "VIDEO" && item.media_url ? <InstagramVideo src={item.media_url} poster={item.thumbnail_url} username={username} /> : item.media_url ? <Image src={item.media_url} alt={`Instagram carousel image ${index + 1}`} fill sizes="(max-width: 850px) 88vw, 700px" unoptimized /> : <p className="instagram-media-unavailable">Media unavailable. View this post on Instagram.</p>;
@@ -15,6 +16,8 @@ export function InstagramCarousel({ items, username }: { items: InstagramChild[]
   const [outgoing, setOutgoing] = useState<{ index: number; direction: 1 | -1 } | null>(null);
   const start = useRef<{ x: number; y: number } | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const preload = useContext(MediaPreloadContext);
+  usePreloadImage(preload ? previewImage(items[index + 1]) : undefined);
   useEffect(() => () => { if (timer.current) clearTimeout(timer.current); }, []);
 
   function move(direction: 1 | -1) {

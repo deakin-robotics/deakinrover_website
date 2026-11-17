@@ -4,8 +4,9 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { InstagramMedia, InstagramPage } from "@/lib/instagram";
 import { FeedFocus } from "./feed-focus";
-import { CaptionCloseContext, FeedFocusedContext } from "./feed-context";
+import { CaptionCloseContext, FeedFocusedContext, MediaPreloadContext } from "./feed-context";
 import { InstagramPost } from "./instagram-post";
+import { previewImage, usePreloadImage } from "./use-preload-image";
 
 function Post({ post, profilePicture }: { post: InstagramMedia; profilePicture?: string }) {
   return <InstagramPost username="deakinrobotics" profilePicture={profilePicture}
@@ -25,6 +26,7 @@ export function ReelFeed({ initialPage, profilePicture }: { initialPage: Instagr
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const closeCaption = useRef<((onClosed: () => void) => void) | null>(null);
   const waitingForCaption = useRef(false);
+  usePreloadImage(previewImage(posts[index + 1]));
 
   const loadMore = useCallback(async () => {
     if (!cursor || inFlight.current) return;
@@ -74,7 +76,7 @@ export function ReelFeed({ initialPage, profilePicture }: { initialPage: Instagr
     <div className="media-back page-section"><Link className="back-link" href="/">← Home</Link><h1>Club <span>Feed</span></h1></div>
     <section className="media-feed page-section" aria-label="Social media feed">
       {initialPage === null ? <p>Instagram posts are temporarily unavailable. <a href="https://www.instagram.com/deakinrobotics/">Visit our Instagram</a>.</p> : !post ? <p>No Instagram posts available yet.</p> : <div className="reel-stack">
-        {outgoing && <div className={`reel-outgoing reel-outgoing--${outgoing.direction === 1 ? "next" : "previous"}`} aria-hidden="true" inert><FeedFocusedContext.Provider value={false}><Post post={outgoing.post} profilePicture={profilePicture} /></FeedFocusedContext.Provider></div>}
+        {outgoing && <div className={`reel-outgoing reel-outgoing--${outgoing.direction === 1 ? "next" : "previous"}`} aria-hidden="true" inert><MediaPreloadContext.Provider value={false}><FeedFocusedContext.Provider value={false}><Post post={outgoing.post} profilePicture={profilePicture} /></FeedFocusedContext.Provider></MediaPreloadContext.Provider></div>}
         <div key={post.id} className={outgoing ? `reel-incoming reel-incoming--${outgoing.direction === 1 ? "next" : "previous"}` : undefined}><Post post={post} profilePicture={profilePicture} /></div>
       </div>}
       {failed && <div className="reel-status" role="status">Couldn’t load more posts. <button type="button" onClick={() => void loadMore()}>Try again</button></div>}
