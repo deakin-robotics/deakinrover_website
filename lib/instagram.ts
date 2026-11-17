@@ -1,6 +1,6 @@
 import "server-only";
 
-type InstagramMedia = {
+export type InstagramMedia = {
   id: string;
   caption?: string;
   media_type: "IMAGE" | "VIDEO" | "CAROUSEL_ALBUM";
@@ -8,7 +8,11 @@ type InstagramMedia = {
   thumbnail_url?: string;
   permalink: string;
   timestamp: string;
+  children?: { data: InstagramChild[]; paging?: { next?: string; cursors?: { after?: string } } };
 };
+
+export type InstagramChild = { id: string; media_type: "IMAGE" | "VIDEO"; media_url?: string; thumbnail_url?: string };
+export type InstagramPage = { posts: InstagramMedia[]; nextCursor: string | null };
 
 export async function getInstagramProfilePicture(): Promise<string | undefined> {
   const token = process.env.INSTAGRAM_ACCESS_TOKEN;
@@ -27,18 +31,14 @@ export async function getInstagramProfilePicture(): Promise<string | undefined> 
   }
 }
 
-export async function getInstagramPosts(): Promise<InstagramMedia[] | null> {
+export async function getInstagramPosts(after?: string): Promise<InstagramPage | null> {
   const token = process.env.INSTAGRAM_ACCESS_TOKEN;
   if (!token) return null;
 
-  const posts: InstagramMedia[] = [];
-  let after: string | undefined;
-
   try {
-    do {
       const url = new URL("https://graph.facebook.com/v27.0/17841472163255475/media");
-      url.searchParams.set("fields", "id,caption,media_type,media_url,thumbnail_url,permalink,timestamp");
-      url.searchParams.set("limit", "100");
+      url.searchParams.set("fields", "id,caption,media_type,media_url,thumbnail_url,permalink,timestamp,children.limit(100){id,media_type,media_url,thumbnail_url}");
+      url.searchParams.set("limit", "3");
       if (after) url.searchParams.set("after", after);
       const response = await fetch(url, {
         headers: { Authorization: `Bearer ${token}` },
@@ -46,10 +46,7 @@ export async function getInstagramPosts(): Promise<InstagramMedia[] | null> {
       });
       if (!response.ok) throw new Error("Instagram request failed");
       const result: { data: InstagramMedia[]; paging?: { next?: string; cursors?: { after?: string } } } = await response.json();
-      posts.push(...result.data);
-      after = result.paging?.next ? result.paging.cursors?.after : undefined;
-    } while (after);
-    return posts;
+      return { posts: result.data, nextCursor: result.paging?.next ? result.paging.cursors?.after ?? null : null };
   } catch {
     console.error("Unable to load Instagram posts");
     return null;

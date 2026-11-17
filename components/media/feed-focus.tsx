@@ -22,7 +22,7 @@ function measureNormalHeight(page: HTMLElement, post: HTMLElement, feed: HTMLEle
   }
 }
 
-export function FeedFocus({ children, hasPost }: { children: ReactNode; hasPost: boolean }) {
+export function FeedFocus({ children, hasPost, postIndex, onMove }: { children: ReactNode; hasPost: boolean; postIndex: number; onMove: (direction: 1 | -1) => void }) {
   const [mode, setMode] = useState<FeedMode>("normal");
   const lastWheel = useRef(0);
   const pageRef = useRef<HTMLElement>(null);
@@ -37,7 +37,7 @@ export function FeedFocus({ children, hasPost }: { children: ReactNode; hasPost:
 
   const exitFocus = useCallback(() => {
     const page = pageRef.current;
-    const post = page?.querySelector<HTMLElement>(".instagram-post");
+    const post = page?.querySelector<HTMLElement>(".reel-stack > div:last-child .instagram-post");
     const feed = page?.querySelector<HTMLElement>(".media-feed");
     const heading = page?.querySelector<HTMLElement>(".media-back");
     if (!page || !post || !feed || !heading || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -80,6 +80,12 @@ export function FeedFocus({ children, hasPost }: { children: ReactNode; hasPost:
       if (event.key === "ArrowDown" && !focused && !exiting && hasPost) {
         event.preventDefault();
         enterFocus();
+      } else if (event.key === "ArrowDown" && focused) {
+        event.preventDefault();
+        onMove(1);
+      } else if (event.key === "ArrowUp" && focused && postIndex > 0) {
+        event.preventDefault();
+        onMove(-1);
       } else if ((event.key === "ArrowUp" || event.key === "Escape") && focused) {
         event.preventDefault();
         exitFocus();
@@ -87,7 +93,7 @@ export function FeedFocus({ children, hasPost }: { children: ReactNode; hasPost:
     }
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [focused, hasPost, exiting, enterFocus, exitFocus]);
+  }, [focused, hasPost, exiting, enterFocus, exitFocus, onMove, postIndex]);
 
   useEffect(() => {
     function onWheel(event: WheelEvent) {
@@ -102,13 +108,40 @@ export function FeedFocus({ children, hasPost }: { children: ReactNode; hasPost:
       if (!isNewGesture) return;
       if (event.deltaY > 0 && !focused) {
         enterFocus();
+      } else if (event.deltaY > 0 && focused) {
+        onMove(1);
+      } else if (event.deltaY < 0 && focused && postIndex > 0) {
+        onMove(-1);
       } else if (event.deltaY < 0 && focused) {
         exitFocus();
       }
     }
     window.addEventListener("wheel", onWheel, { passive: false });
     return () => window.removeEventListener("wheel", onWheel);
-  }, [focused, hasPost, exiting, enterFocus, exitFocus]);
+  }, [focused, hasPost, exiting, enterFocus, exitFocus, onMove, postIndex]);
+
+  useEffect(() => {
+    let start: { x: number; y: number } | null = null;
+    function onTouchStart(event: TouchEvent) {
+      const target = event.target as HTMLElement | null;
+      if (event.touches.length !== 1 || target?.closest(".caption-panel, button, a")) return;
+      start = { x: event.touches[0].clientX, y: event.touches[0].clientY };
+    }
+    function onTouchEnd(event: TouchEvent) {
+      if (!start || !hasPost || exiting) return;
+      const x = event.changedTouches[0].clientX - start.x;
+      const y = event.changedTouches[0].clientY - start.y;
+      start = null;
+      if (Math.abs(y) < 50 || Math.abs(y) <= Math.abs(x)) return;
+      if (y < 0 && !focused) enterFocus();
+      else if (y < 0 && focused) onMove(1);
+      else if (y > 0 && focused && postIndex > 0) onMove(-1);
+      else if (y > 0 && focused) exitFocus();
+    }
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchend", onTouchEnd, { passive: true });
+    return () => { window.removeEventListener("touchstart", onTouchStart); window.removeEventListener("touchend", onTouchEnd); };
+  }, [focused, hasPost, exiting, enterFocus, exitFocus, onMove, postIndex]);
 
   return <FeedFocusedContext.Provider value={focused}><main ref={pageRef} className={`media-page${focused ? " media-page--focused" : ""}${exiting ? " media-page--exiting" : ""}`}>{children}</main></FeedFocusedContext.Provider>;
 }
