@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { InstagramMedia, InstagramPage } from "@/lib/instagram";
 import { FeedFocus } from "./feed-focus";
-import { FeedFocusedContext } from "./feed-context";
+import { CaptionCloseContext, FeedFocusedContext } from "./feed-context";
 import { InstagramPost } from "./instagram-post";
 
 function Post({ post, profilePicture }: { post: InstagramMedia; profilePicture?: string }) {
@@ -23,6 +23,8 @@ export function ReelFeed({ initialPage, profilePicture }: { initialPage: Instagr
   const [failed, setFailed] = useState(false);
   const inFlight = useRef(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const closeCaption = useRef<((onClosed: () => void) => void) | null>(null);
+  const waitingForCaption = useRef(false);
 
   const loadMore = useCallback(async () => {
     if (!cursor || inFlight.current) return;
@@ -53,15 +55,22 @@ export function ReelFeed({ initialPage, profilePicture }: { initialPage: Instagr
 
   const move = useCallback((direction: 1 | -1) => {
     const next = index + direction;
-    if (next < 0 || next >= posts.length || outgoing) return;
-    setOutgoing({ post: posts[index], direction });
-    setIndex(next);
-    if (direction === 1 && cursor && !failed && next >= posts.length - 2) void loadMore();
-    timer.current = setTimeout(() => { setOutgoing(null); timer.current = null; }, 350);
+    if (next < 0 || next >= posts.length || outgoing || waitingForCaption.current) return;
+    const advance = () => {
+      waitingForCaption.current = false;
+      setOutgoing({ post: posts[index], direction });
+      setIndex(next);
+      if (direction === 1 && cursor && !failed && next >= posts.length - 2) void loadMore();
+      timer.current = setTimeout(() => { setOutgoing(null); timer.current = null; }, 350);
+    };
+    if (direction === 1 && closeCaption.current) {
+      waitingForCaption.current = true;
+      closeCaption.current(advance);
+    } else advance();
   }, [cursor, failed, index, loadMore, outgoing, posts]);
 
   const post = posts[index];
-  return <FeedFocus hasPost={Boolean(post)} postIndex={index} onMove={move}>
+  return <CaptionCloseContext.Provider value={closeCaption}><FeedFocus hasPost={Boolean(post)} postIndex={index} onMove={move}>
     <div className="media-back page-section"><Link className="back-link" href="/">← Home</Link><h1>Club <span>Feed</span></h1></div>
     <section className="media-feed page-section" aria-label="Social media feed">
       {initialPage === null ? <p>Instagram posts are temporarily unavailable. <a href="https://www.instagram.com/deakinrobotics/">Visit our Instagram</a>.</p> : !post ? <p>No Instagram posts available yet.</p> : <div className="reel-stack">
@@ -72,5 +81,5 @@ export function ReelFeed({ initialPage, profilePicture }: { initialPage: Instagr
       {loading && index === posts.length - 1 && <p className="reel-status" role="status">Loading more posts…</p>}
       {!cursor && post && index === posts.length - 1 && index > 0 && <p className="reel-status" role="status">You’re all caught up.</p>}
     </section>
-  </FeedFocus>;
+  </FeedFocus></CaptionCloseContext.Provider>;
 }
