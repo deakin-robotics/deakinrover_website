@@ -76,7 +76,8 @@ export function FeedFocus({ children, hasPost, postIndex, onMove }: { children: 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       const target = event.target as HTMLElement | null;
-      if (event.altKey || event.ctrlKey || event.metaKey || event.repeat || target?.closest("input, textarea, select, button, a, video, [contenteditable='true']")) return;
+      if (event.altKey || event.ctrlKey || event.metaKey || event.repeat || target?.closest("input, textarea, select, a, video, [contenteditable='true']")) return;
+      if (target?.closest("button") && !target.closest(".post-caption-toggle, .caption-panel-header button")) return;
       if (event.key === "ArrowDown" && !focused && !exiting && hasPost) {
         event.preventDefault();
         enterFocus();
@@ -97,8 +98,7 @@ export function FeedFocus({ children, hasPost, postIndex, onMove }: { children: 
 
   useEffect(() => {
     function onWheel(event: WheelEvent) {
-      const target = event.target as HTMLElement | null;
-      if (!hasPost || event.ctrlKey || target?.closest(".caption-panel") || Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+      if (!hasPost || event.ctrlKey || Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
       if (exiting) { event.preventDefault(); return; }
       if (!focused && event.deltaY < 0) return;
       event.preventDefault();
@@ -124,7 +124,7 @@ export function FeedFocus({ children, hasPost, postIndex, onMove }: { children: 
     let start: { x: number; y: number } | null = null;
     function onTouchStart(event: TouchEvent) {
       const target = event.target as HTMLElement | null;
-      if (event.touches.length !== 1 || target?.closest(".caption-panel, button, a")) return;
+      if (event.touches.length !== 1 || target?.closest("button, a")) return;
       start = { x: event.touches[0].clientX, y: event.touches[0].clientY };
     }
     function onTouchEnd(event: TouchEvent) {

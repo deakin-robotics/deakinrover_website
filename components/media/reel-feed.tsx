@@ -63,7 +63,7 @@ export function ReelFeed({ initialPage, profilePicture }: { initialPage: Instagr
       if (direction === 1 && cursor && !failed && next >= posts.length - 2) void loadMore();
       timer.current = setTimeout(() => { setOutgoing(null); timer.current = null; }, 350);
     };
-    if (direction === 1 && closeCaption.current) {
+    if (closeCaption.current) {
       waitingForCaption.current = true;
       closeCaption.current(advance);
     } else advance();
